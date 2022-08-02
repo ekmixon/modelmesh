@@ -41,7 +41,7 @@ if hostname is None:
     sys.exit(1)
 
 connection = get_docker_connection()
-connection.request('GET', '/containers/{}/json'.format(urllib.parse.quote(hostname)))
+connection.request('GET', f'/containers/{urllib.parse.quote(hostname)}/json')
 response = connection.getresponse()
 if response.status != 200:
     print('Error fetching information on this Docker container.', file=sys.stderr)
@@ -63,9 +63,9 @@ if not port_info:
 
 for port, host_port_info in port_info.items():
     if host_port_info is None:
-        print('Port {} isn\'t published to the host.'.format(port), file=sys.stderr)
+        print(f"Port {port} isn\'t published to the host.", file=sys.stderr)
         continue
     for host_port_item in host_port_info:
         host_port = host_port_item.get('HostPort')
         if host_port is not None:
-            print('{} {}'.format(port, host_port))
+            print(f'{port} {host_port}')
